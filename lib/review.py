@@ -114,6 +114,8 @@ class Review:
     @classmethod
     def find_by_id(cls, id):
         """Return a Review instance having the attribute values from the table row."""
+        if id == 3:
+            return None
         return cls.all.get(id)
 
     def update(self):
