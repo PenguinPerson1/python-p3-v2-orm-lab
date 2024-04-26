@@ -20,6 +20,36 @@ class Review:
             + f"Employee: {self.employee_id}>"
         )
 
+    @property
+    def year(self):
+        return self._year
+    @year.setter
+    def year(self,val):
+        if type(val) == int and val >= 2000:
+            self._year = val
+        else:
+            raise ValueError("year has to be an int that is 2000 or more")
+    
+    @property
+    def summary(self):
+        return self._summary
+    @summary.setter
+    def summary(self,val):
+        if type(val) == str and val != "":
+            self._summary = val
+        else:
+            raise ValueError("summary should be a non-empty string")
+    
+    @property
+    def employee_id(self):
+        return self._employee_id
+    @employee_id.setter
+    def employee_id(self,val):
+        if Employee.all.get(val):
+            self._employee_id = val
+        else:
+            raise ValueError("employee_id should be the id of an `Employee` class instance that has been persisted into the employees table")
+
     @classmethod
     def create_table(cls):
         """ Create a new table to persist the attributes of Review instances """
@@ -115,9 +145,7 @@ class Review:
         """
         CURSOR.execute(sql)
         rows = CURSOR.fetchall()
-        reviews = []
-        for row in rows:
-            reviews.append(cls.instance_from_db(row))
-        return reviews
+        return [cls.instance_from_db(row) for row in rows]
+        
 
 
